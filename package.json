@@ -1,18 +1,41 @@
 {
-  "name": "react-file-uploader",
-  "private": true,
-  "version": "0.0.0",
+  "name": "react-fileflow",
+  "version": "1.0.2",
+  "description": "A customizable React file uploader component with multi-file support, validation, and auto-upload.",
+  "author": "Devbox",
+  "license": "MIT",
   "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.js"
+    },
+    "./style.css": "./dist/index.css"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "react",
+    "file",
+    "file-uploader",
+    "react upload file",
+    "react uploader"
+  ],
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
   },
   "dependencies": {
-    "nanoid": "^5.1.5",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "nanoid": "^5.1.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

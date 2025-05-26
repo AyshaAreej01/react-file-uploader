@@ -19,6 +19,22 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 }) => {
   const [selectedfile, SetSelectedFile] = useState<any[]>([]);
   const [Files, SetFiles] = useState<any[]>([]);
+  const [isUploaded, setIsUploaded] = useState(false); // Add this state
+
+const FileUploadSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  (e.target as HTMLFormElement).reset();
+
+  if (selectedfile.length > 0) {
+    SetFiles((prev) => [...prev, ...selectedfile]);
+    if (onUpload) onUpload(selectedfile);
+    SetSelectedFile([]);
+    setIsUploaded(true); // Set upload status to true
+  } else {
+    alert("Please select files");
+  }
+};
+
 
   const filesizes = (bytes: number, decimals = 2) => {
     if (bytes === 0) return "0 Bytes";
@@ -66,18 +82,18 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     }
   };
 
-  const FileUploadSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    (e.target as HTMLFormElement).reset();
+  // const FileUploadSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   (e.target as HTMLFormElement).reset();
 
-    if (selectedfile.length > 0) {
-      SetFiles((prev) => [...prev, ...selectedfile]);
-      if (onUpload) onUpload(selectedfile);
-      SetSelectedFile([]);
-    } else {
-      alert("Please select files");
-    }
-  };
+  //   if (selectedfile.length > 0) {
+  //     SetFiles((prev) => [...prev, ...selectedfile]);
+  //     if (onUpload) onUpload(selectedfile);
+  //     SetSelectedFile([]);
+  //   } else {
+  //     alert("Please select files");
+  //   }
+  // };
 
   const DeleteFile = (id: string) => {
     if (window.confirm("Are you sure you want to delete this image?")) {
@@ -92,18 +108,21 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
           <div className="card-body">
             <h2 className="title">Multiple File Upload With Preview</h2>
             <form onSubmit={FileUploadSubmit}>
-              <div className="file-upload-box">
-                <input
-                  type="file"
-                  onChange={InputChange}
-                  multiple={multiple}
-                  accept={acceptedTypes}
-                />
-                <span>
-                  Drag and drop or{" "}
-                  <span className="file-link">Choose your files</span>
-                </span>
-              </div>
+           {!isUploaded && (
+  <div className="file-upload-box">
+    <input
+      type="file"
+      onChange={InputChange}
+      multiple={multiple}
+      accept={acceptedTypes}
+    />
+    <span>
+      Drag and drop or{" "}
+      <span className="file-link">Choose your files</span>
+    </span>
+  </div>
+)}
+
 
               <div className="preview-box">
                 {selectedfile.map(({ id, filename, fileimage, filesize }) => (
@@ -131,40 +150,41 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
                 ))}
               </div>
 
-              {showUploaded && Files.length > 0 && (
-                <div className="preview-box uploaded">
-                  <h3>Uploaded Files</h3>
-                  {Files.map(
-                    ({ id, filename, fileimage, filesize }) => (
-                      <div className="file-box" key={id}>
-                        <button
-                          className="delete-btn"
-                          onClick={() => DeleteFile(id)}
-                          aria-label="Delete file"
-                        >
-                          ×
-                        </button>
-                        {filename.match(/\.(jpg|jpeg|png|gif|svg)$/i) ? (
-                          <img src={fileimage} alt={filename} />
-                        ) : (
-                          <div className="file-icon">📄</div>
-                        )}
-                        <div className="file-name" title={filename}>
-                          {filename}
-                        </div>
-                        <div className="file-details">
-                          <p>{filesize}</p>
-                        </div>
-                        <div className="file-actions">
-                          <a href={fileimage} download={filename}>
-                            Download
-                          </a>
-                        </div>
-                      </div>
-                    )
-                  )}
-                </div>
-              )}
+            {isUploaded && showUploaded && Files.length > 0 && (
+  <>
+    <h3 className="uploaded-heading">Uploaded Files</h3>
+    <div className="preview-box uploaded">
+      {Files.map(({ id, filename, fileimage, filesize }) => (
+        <div className="file-box" key={id}>
+          <button
+            className="delete-btn"
+            onClick={() => DeleteFile(id)}
+            aria-label="Delete file"
+          >
+            ×
+          </button>
+          {filename.match(/\.(jpg|jpeg|png|gif|svg)$/i) ? (
+            <img src={fileimage} alt={filename} />
+          ) : (
+            <div className="file-icon">📄</div>
+          )}
+          <div className="file-name" title={filename}>
+            {filename}
+          </div>
+          <div className="file-details">
+            <p>{filesize}</p>
+          </div>
+          <div className="file-actions">
+            <a href={fileimage} download={filename}>
+              Download
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </>
+)}
+
 
               <div className="upload-button-container">
                 <button type="submit" className="upload-btn">

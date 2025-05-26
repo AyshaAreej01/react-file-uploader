@@ -2,9 +2,10 @@
 
 A powerful, flexible, and customizable React component for file uploads. Supports multiple files, validation, auto-upload, drag & drop, and custom UI rendering.
 
-![npm](https://img.shields.io/npm/v/react-file-uploader-pro)
-![License](https://img.shields.io/npm/l/react-file-uploader-pro)
-![Downloads](https://img.shields.io/npm/dm/react-file-uploader-pro)
+![npm](https://www.npmjs.com/package/react-fileflow)
+![github](https://github.com/AyshaAreej01/react-file-uploader)
+
+
 
 ---
 
@@ -23,12 +24,14 @@ A powerful, flexible, and customizable React component for file uploads. Support
 ## 📦 Installation
 
 ```bash
-npm install react-file-uploader
+npm install react-fileflow
 # or
-yarn add react-file-uploader
+yarn add react-fileflow
 ## ✨ Basic Usage
 ```bash
-import FileUploader from 'react-file-uploader';
+import FileUploader from 'react-fileflow';
+import 'react-fileflow/style.css'; 
+
 
 function App() {
   const handleUpload = async (file: File) => {
